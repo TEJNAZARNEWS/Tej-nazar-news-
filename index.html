@@ -3,15 +3,130 @@
 <html lang="hi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TEJ NAZAR NEWS AI</title>
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f3f4f6;
+  text-align: center;
+}
+header {
+  background: #b80000;
+  color: white;
+  padding: 25px 10px;
+}
+h1 { margin: 0; font-size: 28px; }
+main { padding: 25px 15px; }
+button {
+  display: block;
+  width: 90%;
+  max-width: 350px;
+  margin: 15px auto;
+  padding: 16px;
+  background: #b80000;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 18px;
+  cursor: pointer;
+}
+section {
+  display: none;
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  margin: 20px auto;
+  max-width: 450px;
+}
+input, textarea {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 12px;
+  margin: 8px 0;
+  font-size: 16px;
+}
+textarea { min-height: 110px; }
+</style>
 </head>
 <body>
+
+<header>
 <h1>TEJ NAZAR NEWS AI</h1>
-<h2>जनता की आवाज, खबरों के साथ</h2>
-<p>रिपोर्टर और जनता के लिए डिजिटल न्यूज़ प्लेटफॉर्म</p>
-<button>न्यूज़ देखें</button>
-<button>रिपोर्टर लॉगिन</button>
-<button>खबर भेजें</button>
+<p>जनता की आवाज, खबरों के साथ</p>
+</header>
+
+<main>
+<h2>डिजिटल न्यूज़ प्लेटफॉर्म</h2>
+
+<button onclick="showPage('news')">
+📰 न्यूज़ देखें
+</button>
+
+<button onclick="showPage('login')">
+👤 रिपोर्टर लॉगिन
+</button>
+
+<button onclick="showPage('send')">
+📢 खबर भेजें
+</button>
+
+<section id="news">
+<h2>ताज़ा खबरें</h2>
+<p>TEJ NAZAR NEWS में आपका स्वागत है।</p>
+<p>यहाँ जल्द ही नई खबरें दिखाई देंगी।</p>
+</section>
+
+<section id="login">
+<h2>रिपोर्टर लॉगिन</h2>
+<input type="text" placeholder="रिपोर्टर का नाम">
+<input type="password" placeholder="पासवर्ड">
+<p>सुरक्षित लॉगिन सुविधा जल्द जोड़ी जाएगी।</p>
+</section>
+
+<section id="send">
+<h2>अपनी खबर भेजें</h2>
+<form id="newsForm">
+<input type="text" id="name"
+ placeholder="आपका नाम" required>
+<input type="text" id="place"
+ placeholder="खबर का स्थान" required>
+<textarea id="story"
+ placeholder="अपनी खबर लिखें" required></textarea>
+<button type="submit">खबर तैयार करें</button>
+</form>
+</section>
+</main>
+
+<script>
+function showPage(id) {
+  document.querySelectorAll("section")
+    .forEach(s => s.style.display = "none");
+  document.getElementById(id).style.display = "block";
+}
+
+document.getElementById("newsForm")
+.addEventListener("submit", function(e) {
+  e.preventDefault();
+
+  const name = document.getElementById("name").value;
+  const place = document.getElementById("place").value;
+  const story = document.getElementById("story").value;
+
+  const message =
+    "TEJ NAZAR NEWS AI\n" +
+    "नाम: " + name + "\n" +
+    "स्थान: " + place + "\n" +
+    "खबर: " + story;
+
+  if (navigator.share) {
+    navigator.share({text: message})
+      .catch(() => {});
+  } else {
+    alert("शेयर सुविधा उपलब्ध नहीं है।");
+  }
+});
+</script>
 </body>
 </html>
