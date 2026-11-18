@@ -3,130 +3,126 @@
 <html lang="hi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TEJ NAZAR NEWS </title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TEZ NAZAR NEWS</title>
 <style>
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #f3f4f6;
-  text-align: center;
-}
-header {
-  background: #b80000;
-  color: white;
-  padding: 25px 10px;
-}
-h1 { margin: 0; font-size: 28px; }
-main { padding: 25px 15px; }
-button {
-  display: block;
-  width: 90%;
-  max-width: 350px;
-  margin: 15px auto;
-  padding: 16px;
-  background: #b80000;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 18px;
-  cursor: pointer;
-}
-section {
-  display: none;
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
-  margin: 20px auto;
-  max-width: 450px;
-}
-input, textarea {
-  box-sizing: border-box;
-  width: 100%;
-  padding: 12px;
-  margin: 8px 0;
-  font-size: 16px;
-}
-textarea { min-height: 110px; }
+body{margin:0;font-family:Arial,sans-serif;background:#f2f3f5}
+header{background:#b60000;color:white;text-align:center;padding:18px}
+header h1{margin:0;font-size:28px}
+nav{background:#222;color:white;padding:13px;text-align:center}
+button{background:#b60000;color:white;border:0;border-radius:6px;padding:12px;margin:5px;cursor:pointer}
+main{padding:15px;max-width:750px;margin:auto}
+.card{background:white;padding:16px;margin:12px 0;border-radius:10px;box-shadow:0 2px 6px #ddd}
+input,textarea{box-sizing:border-box;width:100%;padding:12px;margin:7px 0;border:1px solid #ccc;border-radius:6px}
+img{max-width:100%;border-radius:8px}
+.hidden{display:none}
+small{color:#666}
 </style>
 </head>
 <body>
-
 <header>
-<h1>TEJ NAZAR NEWS </h1>
-<p>जनता की आवाज, खबरों के साथ</p>
+<h1>TEZ NAZAR NEWS</h1>
+<p>तेज़ नज़र न्यूज़ | गिरिडीह, झारखंड</p>
 </header>
-
+<nav>सच्ची खबर • तेज़ खबर • आपकी आवाज़</nav>
 <main>
-<h2>डिजिटल न्यूज़ प्लेटफॉर्म</h2>
-
-<button onclick="showPage('news')">
-📰 न्यूज़ देखें
-</button>
-
-<button onclick="showPage('login')">
-👤 रिपोर्टर लॉगिन
-</button>
-
-<button onclick="showPage('send')">
-📢 खबर भेजें
-</button>
-
-<section id="news">
+<button onclick="showHome()">होम</button>
+<button onclick="showLogin()">एडमिन लॉगिन</button>
+<section id="home">
 <h2>ताज़ा खबरें</h2>
-<p>TEJ NAZAR NEWS में आपका स्वागत है।</p>
-<p>यहाँ जल्द ही नई खबरें दिखाई देंगी।</p>
+<div id="news"></div>
 </section>
-
-<section id="login">
-<h2>रिपोर्टर लॉगिन</h2>
-<input type="text" placeholder="रिपोर्टर का नाम">
-<input type="password" placeholder="पासवर्ड">
-<p>सुरक्षित लॉगिन सुविधा जल्द जोड़ी जाएगी।</p>
+<section id="login" class="card hidden">
+<h2>एडमिन डेमो</h2>
+<p>यह केवल इस ब्राउज़र में खबर जोड़ने का डेमो है।</p>
+<button onclick="showEditor()">खबर लिखें</button>
 </section>
-
-<section id="send">
-<h2>अपनी खबर भेजें</h2>
-<form id="newsForm">
-<input type="text" id="name"
- placeholder="आपका नाम" required>
-<input type="text" id="place"
- placeholder="खबर का स्थान" required>
-<textarea id="story"
- placeholder="अपनी खबर लिखें" required></textarea>
-<button type="submit">खबर तैयार करें</button>
-</form>
+<section id="editor" class="card hidden">
+<h2>नई खबर जोड़ें</h2>
+<input id="headline" placeholder="खबर का शीर्षक">
+<textarea id="story" rows="6" placeholder="पूरी खबर लिखें"></textarea>
+<input id="photo" placeholder="फोटो का HTTPS लिंक">
+<input id="video" placeholder="वीडियो का HTTPS लिंक">
+<button onclick="publish()">खबर सेव करें</button>
+<button onclick="showHome()">वापस</button>
 </section>
 </main>
-
 <script>
-function showPage(id) {
-  document.querySelectorAll("section")
-    .forEach(s => s.style.display = "none");
-  document.getElementById(id).style.display = "block";
+const home=document.getElementById("home");
+const login=document.getElementById("login");
+const editor=document.getElementById("editor");
+const news=document.getElementById("news");
+let articles=[];
+try{
+articles=JSON.parse(localStorage.getItem("tnn_news")||"[]");
+if(!Array.isArray(articles))articles=[];
+}catch(e){articles=[]}
+function hideAll(){
+home.classList.add("hidden");
+login.classList.add("hidden");
+editor.classList.add("hidden");
 }
-
-document.getElementById("newsForm")
-.addEventListener("submit", function(e) {
-  e.preventDefault();
-
-  const name = document.getElementById("name").value;
-  const place = document.getElementById("place").value;
-  const story = document.getElementById("story").value;
-
-  const message =
-    "TEJ NAZAR NEWS \n" +
-    "नाम: " + name + "\n" +
-    "स्थान: " + place + "\n" +
-    "खबर: " + story;
-
-  if (navigator.share) {
-    navigator.share({text: message})
-      .catch(() => {});
-  } else {
-    alert("शेयर सुविधा उपलब्ध नहीं है।");
-  }
+function showHome(){
+hideAll();home.classList.remove("hidden");render();
+}
+function showLogin(){
+hideAll();login.classList.remove("hidden");
+}
+function showEditor(){
+hideAll();editor.classList.remove("hidden");
+}
+function validUrl(s){
+try{
+let u=new URL(s);
+return u.protocol==="https:";
+}catch(e){return false}
+}
+function publish(){
+let title=document.getElementById("headline").value.trim();
+let body=document.getElementById("story").value.trim();
+let photo=document.getElementById("photo").value.trim();
+let video=document.getElementById("video").value.trim();
+if(!title||!body){alert("शीर्षक और खबर लिखें");return}
+if((photo&&!validUrl(photo))||(video&&!validUrl(video))){
+alert("सही HTTPS लिंक डालें");return;
+}
+articles.unshift({title,body,photo,video,date:new Date().toLocaleString("hi-IN")});
+localStorage.setItem("tnn_news",JSON.stringify(articles));
+document.querySelectorAll("#editor input,#editor textarea").forEach(x=>x.value="");
+showHome();
+}
+function render(){
+news.replaceChildren();
+if(!articles.length){
+let p=document.createElement("p");
+p.textContent="अभी कोई खबर नहीं है।";
+news.appendChild(p);
+}
+articles.forEach(a=>{
+let card=document.createElement("article");
+card.className="card";
+let h=document.createElement("h3");
+h.textContent=a.title;card.appendChild(h);
+let date=document.createElement("small");
+date.textContent=a.date;card.appendChild(date);
+if(a.photo){
+let img=document.createElement("img");
+img.src=a.photo;img.alt="खबर की तस्वीर";
+card.appendChild(img);
+}
+let p=document.createElement("p");
+p.textContent=a.body;card.appendChild(p);
+if(a.video){
+let link=document.createElement("a");
+link.href=a.video;link.target="_blank";
+link.rel="noopener noreferrer";
+link.textContent="वीडियो देखें";
+card.appendChild(link);
+}
+news.appendChild(card);
 });
+}
+render();
 </script>
 </body>
 </html>
