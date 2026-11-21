@@ -3,111 +3,213 @@
 <html lang="hi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TEJ NAZAR NEWS</title>
+
 <style>
 *{box-sizing:border-box}
-body{margin:0;font-family:Arial,sans-serif;background:#f1f3f6;color:#222}
-header{background:#b90000;color:white;text-align:center;padding:22px 10px}
+body{
+margin:0;
+font-family:Arial,sans-serif;
+background:#f1f3f6;
+}
+header{
+background:#b90000;
+color:white;
+text-align:center;
+padding:22px 10px;
+}
 header h1{margin:0;font-size:30px}
-header p{margin:8px}
-nav{background:#10254a;padding:12px;text-align:center}
-button{background:#b90000;color:white;border:0;padding:12px 18px;border-radius:6px;margin:4px;cursor:pointer;font-size:15px}
-section{max-width:850px;margin:15px auto;padding:15px}
-input,textarea{width:100%;padding:13px;margin:8px 0;border:1px solid #ccc;border-radius:6px;font-size:16px}
-textarea{min-height:150px}
-.panel,.card{background:white;border-radius:10px;padding:16px;margin-bottom:16px;box-shadow:0 2px 7px #ddd}
-.card img{width:100%;border-radius:7px}
-.card h2{color:#b90000}
-.card p{white-space:pre-wrap;line-height:1.7}
-small{color:#666}
+header h2{margin:8px}
+nav{
+background:#10234b;
+padding:10px;
+text-align:center;
+}
+button{
+background:#b90000;
+color:white;
+border:0;
+border-radius:6px;
+padding:12px 18px;
+margin:5px;
+cursor:pointer;
+font-size:15px;
+}
+main{
+max-width:900px;
+margin:auto;
+padding:12px;
+}
+section,article{
+background:white;
+padding:18px;
+margin:15px 0;
+border-radius:10px;
+box-shadow:0 2px 8px #0002;
+}
+input,textarea{
+width:100%;
+padding:12px;
+margin:8px 0;
+border:1px solid #ccc;
+border-radius:5px;
+font-size:16px;
+}
+textarea{min-height:140px}
+img,video,iframe{
+max-width:100%;
+border-radius:6px;
+}
+footer{
+background:#10234b;
+color:white;
+text-align:center;
+padding:20px;
+}
 .hidden{display:none}
-footer{background:#10254a;color:white;text-align:center;padding:20px}
-#status{padding:10px;text-align:center}
-a{color:#0645ad}
+#message{
+white-space:pre-wrap;
+color:#b90000;
+}
+.breaking{
+background:#ffdc00;
+padding:12px;
+text-align:center;
+font-weight:bold;
+}
+.newsTitle{color:#b90000}
 </style>
 </head>
+
 <body>
 
 <header>
 <h1>TEJ NAZAR NEWS</h1>
-<p>तेज़ नज़र न्यूज़</p>
-<p>हर खबर पर तेज़ नज़र</p>
+<h2>तेज़ नज़र न्यूज़</h2>
+<p>गिरिडीह | झारखंड | देश-दुनिया</p>
 </header>
 
+<div class="breaking">
+BREAKING NEWS | हर खबर पर तेज़ नज़र
+</div>
+
 <nav>
-<button id="homeBtn">होम</button>
-<button id="loginBtn">एडमिन लॉगिन</button>
-<button id="logoutBtn" class="hidden">लॉगआउट</button>
+<button onclick="showNews()">ताज़ा खबरें</button>
+<button onclick="showLogin()">रिपोर्टर / एडमिन लॉगिन</button>
 </nav>
 
-<div id="status" role="status"></div>
+<main>
 
-<section id="login" class="hidden">
-<div class="panel">
-<h2>एडमिन लॉगिन</h2>
-<form id="loginForm">
-<input id="email" type="email" placeholder="ईमेल" required>
-<input id="password" type="password" placeholder="पासवर्ड" required>
-<button type="submit">लॉगिन करें</button>
-</form>
-</div>
+<p id="message"></p>
+
+<section id="loginBox" class="hidden">
+<h2>रिपोर्टर / एडमिन लॉगिन</h2>
+
+<input id="email" type="email"
+placeholder="ईमेल आईडी">
+
+<input id="password" type="password"
+placeholder="पासवर्ड">
+
+<button onclick="login()">लॉगिन करें</button>
+
+<button onclick="resetPassword()">
+पासवर्ड भूल गए
+</button>
 </section>
 
-<section id="editor" class="hidden">
-<div class="panel">
-<h2>नई खबर प्रकाशित करें</h2>
-<form id="newsForm">
-<input id="headline" placeholder="खबर का शीर्षक" required>
-<textarea id="story" placeholder="खबर का पूरा विवरण" required></textarea>
-<input id="photo" type="url" placeholder="फोटो का HTTPS लिंक">
-<input id="video" type="url" placeholder="वीडियो का HTTPS लिंक">
-<button type="submit">खबर प्रकाशित करें</button>
-</form>
-</div>
+<section id="dashboard" class="hidden">
+
+<h2>न्यूज़ डैशबोर्ड</h2>
+
+<p id="userEmail"></p>
+
+<input id="newsTitle"
+placeholder="खबर का शीर्षक">
+
+<input id="location"
+placeholder="स्थान">
+
+<input id="reporter"
+placeholder="रिपोर्टर का नाम">
+
+<textarea id="description"
+placeholder="खबर का पूरा विवरण"></textarea>
+
+<input id="photo"
+placeholder="फोटो का URL (वैकल्पिक)">
+
+<input id="video"
+placeholder="वीडियो का URL (वैकल्पिक)">
+
+<button onclick="submitNews()">
+खबर भेजें
+</button>
+
+<button onclick="myNews()">
+मेरी भेजी खबरें
+</button>
+
+<button onclick="adminNews()">
+एडमिन मंजूरी
+</button>
+
+<button onclick="logout()">
+लॉगआउट
+</button>
+
+<div id="manageNews"></div>
+
 </section>
 
-<section id="newsSection">
-<h2>🔴 ताज़ा खबरें</h2>
-<div id="news">खबरें लोड हो रही हैं...</div>
+<section id="publicNews">
+<h2>ताज़ा समाचार</h2>
+<div id="newsList">खबरें लोड हो रही हैं...</div>
 </section>
+
+</main>
 
 <footer>
-© TEJ NAZAR NEWS<br>
-गिरिडीह, झारखंड
+TEJ NAZAR NEWS<br>
+तेज़ नज़र न्यूज़, गिरिडीह, झारखंड<br>
+सर्वाधिकार सुरक्षित
 </footer>
 
 <script type="module">
 
-import { initializeApp } from
-"https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
 
 import {
 getAuth,
 signInWithEmailAndPassword,
 signOut,
-onAuthStateChanged
-} from
-"https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+onAuthStateChanged,
+sendPasswordResetEmail
+}
+from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
 
 import {
 getFirestore,
 collection,
 addDoc,
-deleteDoc,
-doc,
-onSnapshot,
+getDocs,
 query,
-orderBy,
+where,
+updateDoc,
+doc,
 serverTimestamp
-} from
-"https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+}
+from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 
 const firebaseConfig = {
 apiKey: "AIzaSyBPsFE0AItJUnRrKh3G78JMiMnmhTzukNM",
 authDomain: "tejnazarnews-f17b3.firebaseapp.com",
 projectId: "tejnazarnews-f17b3",
-appId: "1:776903715743:web:487cdac0caddaeb55febaa"
+messagingSenderId: "776903715743",
+appId: "1:776903715743:web:487cdac0caddaeb55febaa",
+measurementId: "G-VBNQD24RRW"
 };
 
 const app = initializeApp(firebaseConfig);
@@ -115,194 +217,247 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 
 const $ = id => document.getElementById(id);
-let user = null;
-let articles = [];
 
-function status(message){
-$("status").textContent = message;
+function message(text){
+$("message").textContent=text;
 }
 
-function validUrl(value){
-if(!value) return true;
-try{
-return new URL(value).protocol === "https:";
-}catch{
-return false;
-}
-}
-
-$("homeBtn").onclick = () => {
-$("login").classList.add("hidden");
-$("editor").classList.add("hidden");
-$("newsSection").scrollIntoView();
+window.showNews = function(){
+$("loginBox").classList.add("hidden");
+$("publicNews").scrollIntoView();
+loadNews();
 };
 
-$("loginBtn").onclick = () => {
-$(user ? "editor" : "login").classList.remove("hidden");
+window.showLogin = function(){
+if(auth.currentUser){
+$("dashboard").scrollIntoView();
+}else{
+$("loginBox").classList.remove("hidden");
+}
 };
 
-$("loginForm").onsubmit = async e => {
-e.preventDefault();
+window.login = async function(){
 try{
+const email=$("email").value.trim();
+const password=$("password").value;
+
 await signInWithEmailAndPassword(
-auth,
-$("email").value.trim(),
-$("password").value
+auth,email,password
 );
-$("loginForm").reset();
-status("लॉगिन सफल।");
-}catch(error){
-status("लॉगिन असफल: " + error.code);
+
+message("लॉगिन सफल हुआ।");
+
+}catch(e){
+message("लॉगिन नहीं हुआ: "+e.code);
 }
 };
 
-$("logoutBtn").onclick = async () => {
+window.resetPassword = async function(){
 try{
-await signOut(auth);
-status("लॉगआउट सफल।");
-}catch(error){
-status(error.code);
+await sendPasswordResetEmail(
+auth,$("email").value.trim()
+);
+message("पासवर्ड रीसेट लिंक भेज दिया गया।");
+}catch(e){
+message(e.code);
 }
 };
 
-onAuthStateChanged(auth, currentUser => {
-user = currentUser;
-
-$("login").classList.add("hidden");
-$("editor").classList.toggle("hidden", !user);
-$("logoutBtn").classList.toggle("hidden", !user);
-
-$("loginBtn").textContent =
-user ? "नई खबर लिखें" : "एडमिन लॉगिन";
-
-render();
+onAuthStateChanged(auth,user=>{
+if(user){
+$("loginBox").classList.add("hidden");
+$("dashboard").classList.remove("hidden");
+$("userEmail").textContent=user.email;
+}else{
+$("dashboard").classList.add("hidden");
+$("manageNews").replaceChildren();
+}
 });
 
-$("newsForm").onsubmit = async e => {
-e.preventDefault();
+window.logout = async function(){
+await signOut(auth);
+message("लॉगआउट सफल।");
+};
 
-if(!user){
-status("पहले लॉगिन करें।");
+window.submitNews = async function(){
+
+if(!auth.currentUser){
+message("पहले लॉगिन करें।");
 return;
 }
 
-const title = $("headline").value.trim();
-const body = $("story").value.trim();
-const photo = $("photo").value.trim();
-const video = $("video").value.trim();
+const title=$("newsTitle").value.trim();
+const description=$("description").value.trim();
 
-if(!title || !body){
-status("शीर्षक और खबर लिखें।");
-return;
-}
-
-if(!validUrl(photo) || !validUrl(video)){
-status("सही HTTPS लिंक डालें।");
+if(!title || !description){
+message("शीर्षक और विवरण भरें।");
 return;
 }
 
 try{
 await addDoc(collection(db,"news"),{
-title,
-body,
-photo,
-video,
-authorUid:user.uid,
+title:title,
+description:description,
+location:$("location").value.trim(),
+reporter:$("reporter").value.trim(),
+photo:$("photo").value.trim(),
+video:$("video").value.trim(),
+uid:auth.currentUser.uid,
+email:auth.currentUser.email,
+status:"pending",
 createdAt:serverTimestamp()
 });
 
-$("newsForm").reset();
-status("खबर सफलतापूर्वक प्रकाशित हुई।");
+message("खबर एडमिन की मंजूरी के लिए भेज दी गई।");
 
-}catch(error){
-status("खबर प्रकाशित नहीं हुई: " + error.code);
+["newsTitle","description","location",
+"reporter","photo","video"].forEach(id=>{
+$(id).value="";
+});
+
+}catch(e){
+message("खबर नहीं भेजी गई: "+e.code);
 }
 };
 
-const newsQuery = query(
-collection(db,"news"),
-orderBy("createdAt","desc")
+function safeUrl(value){
+try{
+const url=new URL(value);
+return url.protocol==="https:" ? url.href : "";
+}catch{
+return "";
+}
+}
+
+function renderNews(container,item){
+const n=item.data();
+const article=document.createElement("article");
+
+const title=document.createElement("h2");
+title.className="newsTitle";
+title.textContent=n.title || "";
+article.appendChild(title);
+
+const info=document.createElement("p");
+info.textContent=
+(n.location || "")+" | "+(n.reporter || "");
+article.appendChild(info);
+
+const photo=safeUrl(n.photo);
+if(photo){
+const img=document.createElement("img");
+img.src=photo;
+img.loading="lazy";
+article.appendChild(img);
+}
+
+const description=document.createElement("p");
+description.style.whiteSpace="pre-wrap";
+description.textContent=n.description || "";
+article.appendChild(description);
+
+const video=safeUrl(n.video);
+if(video){
+const link=document.createElement("a");
+link.href=video;
+link.target="_blank";
+link.rel="noopener noreferrer";
+link.textContent="वीडियो देखें";
+article.appendChild(link);
+}
+
+container.appendChild(article);
+return article;
+}
+
+async function displayNews(q,container,mode){
+const snapshot=await getDocs(q);
+container.replaceChildren();
+
+const items=snapshot.docs.sort((a,b)=>
+(b.data().createdAt?.seconds || 0)-
+(a.data().createdAt?.seconds || 0)
 );
 
-onSnapshot(newsQuery,snapshot => {
-articles = snapshot.docs.map(item => ({
-id:item.id,
-...item.data()
-}));
-render();
-},error => {
-status("Database समस्या: " + error.code);
-$("news").textContent = "खबरें लोड नहीं हुईं।";
+if(!items.length){
+container.textContent="अभी कोई खबर उपलब्ध नहीं है।";
+}
+
+items.forEach(item=>{
+const article=renderNews(container,item);
+
+if(mode==="mine"){
+const p=document.createElement("p");
+p.textContent="स्थिति: "+item.data().status;
+article.appendChild(p);
+}
+
+if(mode==="admin"){
+const btn=document.createElement("button");
+btn.textContent="खबर प्रकाशित करें";
+btn.onclick=()=>approveNews(item.id);
+article.appendChild(btn);
+}
 });
-
-function render(){
-
-const news = $("news");
-news.replaceChildren();
-
-if(!articles.length){
-news.textContent = "अभी कोई खबर नहीं है।";
 }
 
-articles.forEach(a => {
-
-const card = document.createElement("article");
-card.className = "card";
-
-const title = document.createElement("h2");
-title.textContent = a.title;
-card.appendChild(title);
-
-const date = document.createElement("small");
-date.textContent = a.createdAt?.toDate
-? a.createdAt.toDate().toLocaleString("hi-IN")
-: "";
-card.appendChild(date);
-
-if(a.photo && validUrl(a.photo)){
-const img = document.createElement("img");
-img.src = a.photo;
-img.alt = "खबर की तस्वीर";
-img.loading = "lazy";
-card.appendChild(img);
-}
-
-const body = document.createElement("p");
-body.textContent = a.body;
-card.appendChild(body);
-
-if(a.video && validUrl(a.video)){
-const link = document.createElement("a");
-link.href = a.video;
-link.target = "_blank";
-link.rel = "noopener noreferrer";
-link.textContent = "▶ वीडियो देखें";
-card.appendChild(link);
-}
-
-if(user && user.uid === a.authorUid){
-
-const del = document.createElement("button");
-del.textContent = "खबर डिलीट करें";
-
-del.onclick = async () => {
-if(!confirm("क्या खबर डिलीट करनी है?")) return;
-
+async function loadNews(){
 try{
-await deleteDoc(doc(db,"news",a.id));
-status("खबर डिलीट हो गई।");
-}catch(error){
-status("डिलीट असफल: " + error.code);
+await displayNews(
+query(collection(db,"news"),
+where("status","==","approved")),
+$("newsList"),"public"
+);
+}catch(e){
+$("newsList").textContent=
+"खबरें लोड नहीं हुईं: "+e.code;
+}
+}
+
+window.myNews = async function(){
+if(!auth.currentUser)return;
+try{
+await displayNews(
+query(collection(db,"news"),
+where("uid","==",auth.currentUser.uid)),
+$("manageNews"),"mine"
+);
+}catch(e){
+message(e.code);
 }
 };
 
-card.appendChild(del);
+window.adminNews = async function(){
+if(!auth.currentUser)return;
+
+try{
+await displayNews(
+query(collection(db,"news"),
+where("status","==","pending")),
+$("manageNews"),"admin"
+);
+}catch(e){
+message("एडमिन अनुमति आवश्यक है: "+e.code);
+}
+};
+
+async function approveNews(id){
+try{
+await updateDoc(doc(db,"news",id),{
+status:"approved",
+publishedAt:serverTimestamp()
+});
+message("खबर प्रकाशित हो गई।");
+await window.adminNews();
+await loadNews();
+}catch(e){
+message("प्रकाशन की अनुमति नहीं मिली: "+e.code);
+}
 }
 
-news.appendChild(card);
-});
-}
+loadNews();
 
 </script>
+
 </body>
 </html>
