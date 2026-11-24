@@ -444,7 +444,7 @@ message("एडमिन अनुमति आवश्यक है: "+e.code)
 async function approveNews(id){
 try{
 await updateDoc(doc(db,"news",id),{
-status:"approved",
+status:"published",
 publishedAt:serverTimestamp()
 });
 message("खबर प्रकाशित हो गई।");
